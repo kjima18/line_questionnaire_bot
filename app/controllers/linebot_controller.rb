@@ -28,7 +28,10 @@ class LinebotController < ApplicationController
           # LINEから送られてきたメッセージが「アンケート」と一致するかチェック
           if event.message['text'].eql?('アンケート')
             # private内のtemplateメソッドを呼び出します。
-            client.reply_message(event['replyToken'], template)
+            client.reply_message(event['replyToken'], template1)
+          elsif event.message['text'].eql?('質問')
+            # private内のtemplateメソッドを呼び出します。
+            client.reply_message(event['replyToken'], template2)
           end
         end
       end
@@ -39,7 +42,7 @@ class LinebotController < ApplicationController
 
   private
 
-  def template
+  def template1
     {
       "type": "template",
       "altText": "this is a confirm template",
@@ -58,6 +61,31 @@ class LinebotController < ApplicationController
                 "type": "message",
                 "label": "楽しくない",
                 "text": "楽しくない"
+              }
+          ]
+      }
+    }
+  end
+
+  def template2
+    {
+      "type": "template",
+      "altText": "this is a confirm template",
+      "template": {
+          "type": "confirm",
+          "text": "今日の気分は？",
+          "actions": [
+              {
+                "type": "message",
+                # Botから送られてきたメッセージに表示される文字列です。
+                "label": "上々",
+                # ボタンを押した時にBotに送られる文字列です。
+                "text": "上々"
+              },
+              {
+                "type": "message",
+                "label": "微妙",
+                "text": "微妙"
               }
           ]
       }
